@@ -1,14 +1,22 @@
 import discord
 import asyncio
-from snapbot import SnapchatBot
+import json
+from testbot import TestBot
 
-client = discord.Client()
+if __name__ == "__main__":
+    configData = None
+    with open('clientconfig.json') as configFile:
+        configData = json.load(configFile)
 
-@client.event
-async def on_ready():
-    print('BT bot ready!')
-    snapbot = SnapChatBot(client)
-    testbot = Testbot(client)
+    client = discord.Client()
+    testbot = TestBot(client)
 
-client.loop.create_task(snapbot.snapchat_bot())
-client.run('key')
+    @client.event
+    async def on_ready():
+        print('BT bot ready!')
+
+    @client.event
+    async def on_message(message):
+        await testbot.handleMessage(message)
+
+    client.run(configData['token'])
