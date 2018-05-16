@@ -1,6 +1,5 @@
 #secrets files
-clientconfig.json
-testClientconfig.json
+clientconfig*.json
 
 #visual studio files
 .vs/
