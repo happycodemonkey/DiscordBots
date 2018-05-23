@@ -5,23 +5,24 @@ import json
 from testbot import TestBot
 from pollbot import PollBot
 
-if __name__ == "__main__":
-    configData = None
-    with open('clientconfig.json') as configFile:
-        configData = json.load(configFile)
+class BtBotClient(discord.Client):
+    """ discord.py v1.0.0a0 client """
+    def __init__(self):
+        super().__init__()
+        self.testBot = TestBot(self)
+        self.pollBot = PollBot(self)
 
-    client = discord.Client()
-    testbot = TestBot(client)
-    pollBot = PollBot(client)
-
-    @client.event
-    async def on_ready():
+    async def on_ready(self):
         print('BT bot ready!')
 
-    @client.event
-    async def on_message(message):
-        await testbot.handleMessage(message)
-        await pollBot.handleMessage(message)
-            
+    async def on_message(self, message):
+        await self.testBot.handleMessage(message)
+        await self.pollBot.handleMessage(message)
 
+if __name__ == "__main__":
+    configData = None
+    with open('clientconfig_privatetesting.json') as configFile:
+        configData = json.load(configFile)
+
+    client = BtBotClient()
     client.run(configData['token'])
