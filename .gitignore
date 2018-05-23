@@ -1,3 +1,9 @@
+#secrets files
+clientconfig*.json
+
+#visual studio files
+.vs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

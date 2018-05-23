@@ -1,27 +1,22 @@
 import discord
 import asyncio
+import json
 
-client = discord.Client()
+class TestBot:
+    """ Simple test bot"""
 
-@client.event
-async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
+    def __init__(self, client):
+        self.client = client
 
-@client.event
-async def on_message(message):
-    if message.content.startswith('!test'):
-        counter = 0
-        tmp = await client.send_message(message.channel, 'Calculating messages...')
-        async for log in client.logs_from(message.channel, limit=100):
-            if log.author == message.author:
-                counter += 1
+    async def handleMessage(self, message):
+        if message.content.startswith('!test'):
+            counter = 0
+            tmp = await message.channel.send('Calculating messages...')
+            async for msg in message.channel.history(limit=100):
+                if msg.author == message.author:
+                    counter += 1
 
-        await client.edit_message(tmp, 'You have {} messages.'.format(counter))
-    elif message.content.startswith('!sleep'):
-        await asyncio.sleep(5)
-        await client.send_message(message.channel, 'Done sleeping')
-
-client.run('key')
+            await tmp.edit(content='You have {} messages.'.format(counter))
+        elif message.content.startswith('!sleep'):
+            await asyncio.sleep(5)
+            await message.channel.send('Done sleeping')
