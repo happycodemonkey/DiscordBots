@@ -21,7 +21,7 @@ class BtBotClient(discord.Client):
 
 if __name__ == "__main__":
     configData = None
-    with open('clientconfig_privatetesting.json') as configFile:
+    with open('clientconfig.json') as configFile:
         configData = json.load(configFile)
 
     client = BtBotClient()
